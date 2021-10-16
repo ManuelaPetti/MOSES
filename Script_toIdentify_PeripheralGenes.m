@@ -2,13 +2,10 @@ clc
 clear
 close all
 
-%% Creating the files to save results
-dir =       'M:\FSL\work1\DGP Annotation-based Algorithm\Gene Ontology Annotations';%% DisGeNET
+dir =       '...';
 CCflag =    1;
 
-%% This variables are used to decide the disease, the threshold for ppi
-%score, the module size
-diseases = 1:1:70;
+diseases = 1:70;
 
 % % Setting the variables for the elaborations
 % sdir = fullfile('M:\Network Medicine\DA&R\Results_DiaBLe',sprintf('HIPPIE thr%g no self-loops',thrHscore));
@@ -18,7 +15,7 @@ diseases = 1:1:70;
 
 %% Importing data
 %Import the interactome 
-Interactome = readtable('M:\Network Medicine\Data\PPI201806_large\PPI201806_large.txt');
+Interactome = readtable('...\PPI201806_large.txt');
 genes(:,1) = Interactome.Var1;
 genes(:,2) = Interactome.Var3;
 %save the gene names in a variable
@@ -75,7 +72,7 @@ end
 
 N = length(all_genes);% total number of nodes in the entire network (isolated nodes are excluded)
 
-%% importing the seeds for 71 diseases from a tsv file
+%% importing the seeds for 70 diseases from a tsv file
 disease = tdfread('seeds.tsv');
 genes_seed = cell(size(disease.Genes,1),1);
 for i=1:70
@@ -87,19 +84,9 @@ end
 clear ge
 SeedsPeriphGenes.diseases = disease.Diseases;
 SeedsPeriphGenes.seeds = genes_seed;
-% % %%
-% % Allseeds = [];
-% % for i=1:70
-% %     seeds0 = genes_seed{i,1}; 
-% %     Allseeds = union(Allseeds,seeds0);
-% % end
-% % [~, locS] = ismember(Allseeds,all_genes);
-% % locS(find(locS==0)) = [];
-% % h = plot(G);
-% % highlight(h,locS,'NodeColor','r')
 
 %%
-for dd=1:length(diseases)
+for dd=diseases
     %Chose the disease that you prefere to look for
     seeds0 = genes_seed{dd,1}; 
     [~, locS] = ismember(seeds0,all_genes);
